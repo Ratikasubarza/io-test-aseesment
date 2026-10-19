@@ -1,0 +1,14 @@
+{
+  "valid": {
+    "firstname": "Alex",
+    "lastname": "Tester",
+    "email": "alex.tester@example.com",
+    "phone": "07700900123"
+  },
+  "invalid email": {
+    "firstname": "Alex",
+    "lastname": "Tester",
+    "email": "alex.tester.example.com",
+    "phone": "07700900123"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "restful-booker-playwright-bdd",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright + TypeScript + Gherkin (Cucumber) UI tests for the Restful Booker Platform demo site",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "install:browsers": "playwright install chromium",
+    "test": "cucumber-js --config config/cucumber.cjs",
+    "test:ui": "npm test -- --tags \"not @performance\"",
+    "test:e2e": "npm test -- --tags @e2e",
+    "test:negative": "npm test -- --tags @negative",
+    "test:performance": "cucumber-js --config config/cucumber.cjs --profile performance",
+    "test:headed": "cross-env HEADED=true npm test",
+    "test:dry-run": "npm test -- --dry-run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "verify": "npm run typecheck && npm run lint && npm run test:dry-run",
+    "report": "open-cli reports/cucumber-report.html",
+    "report:performance": "open-cli reports/performance-report.html",
+    "trace": "playwright show-trace"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^22.20.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "open-cli": "^9.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.2"
+  }
+}

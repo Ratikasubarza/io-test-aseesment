@@ -1,0 +1,67 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ui:
+    name: UI tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run UI scenarios against the live demo site
+        run: npm run test:ui
+
+      - name: Upload reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-reports
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  # Response times depend on the network between the runner and the site, and every round
+  # creates and deletes data on the shared demo site. So this job runs only when started by hand
+  # (Actions tab > Tests > Run workflow), not on every push.
+  performance:
+    name: Response-time check (manual)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run the response-time scenario against the live demo site
+        run: npm run test:performance
+
+      - name: Upload reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-reports
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14
