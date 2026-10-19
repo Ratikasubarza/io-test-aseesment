@@ -1,4 +1,4 @@
-# Restful Booker – Playwright + Gherkin tests
+# Automation-Playwright
 
 Tests for the Restful Booker demo site <https://automationintesting.online/>, written with
 Playwright, TypeScript and Cucumber (Gherkin). There are two UI scenarios taken from my manual test
